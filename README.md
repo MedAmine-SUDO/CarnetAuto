@@ -1,73 +1,143 @@
-# React + TypeScript + Vite
+# Carnet Auto
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A Progressive Web App for tracking vehicle maintenance, fuel consumption, and document expiry dates. Built with React, TypeScript, and Capacitor for Android.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Dashboard** — odometer tracking, maintenance status overview, document expiry alerts
+- **Maintenance** — full list of maintenance items with urgency indicators (OK / Soon / Overdue)
+- **Fuel** — log fill-ups, view consumption stats (L/100km), fuel history
+- **Settings** — language switcher (FR/EN), vehicle info, data reset
+- **Onboarding** — first-time setup wizard for vehicle model, fuel type, odometer, documents
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React 19 + TypeScript
+- Vite 7 (build tool)
+- Tailwind CSS 3 + shadcn/ui components
+- Capacitor (Android native wrapper)
+- Data stored in browser localStorage
 
-## Expanding the ESLint configuration
+## Prerequisites
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+| Tool | Version | Purpose |
+|------|---------|---------|
+| Node.js | 20+ | JS runtime and package manager |
+| JDK | 21 | Android compilation |
+| Android SDK | API 35 | Android build tools |
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Install prerequisites (Ubuntu)
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+```bash
+# Node.js 20 (via nvm)
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+nvm install 20
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# JDK 21
+sudo apt install openjdk-21-jdk-headless
+
+# Android SDK command-line tools
+mkdir -p ~/Android/Sdk/cmdline-tools
+cd ~/Android/Sdk/cmdline-tools
+wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
+unzip commandlinetools-linux-11076708_latest.zip
+mv cmdline-tools latest
+
+# Add to ~/.bashrc
+export ANDROID_HOME=$HOME/Android/Sdk
+export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
+
+# Install SDK packages and accept licenses
+sdkmanager --licenses
+sdkmanager "platforms;android-35" "build-tools;35.0.0" "platform-tools"
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Development
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev
 ```
+
+Opens on http://localhost:3000 with hot reload.
+
+## Available Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server |
+| `npm run build` | Type-check and build for production |
+| `npm run lint` | Run ESLint |
+| `npm run preview` | Preview production build locally |
+
+## Build Android APK
+
+```bash
+# Build web assets and sync to Android project
+npm run build
+npx cap add android      # first time only
+npx cap sync android
+
+# Build the debug APK
+cd android
+./gradlew assembleDebug
+```
+
+The APK is output to:
+```
+android/app/build/outputs/apk/debug/app-debug.apk
+```
+
+### Rebuild after changes
+
+```bash
+npm run build && npx cap sync android && cd android && ./gradlew assembleDebug
+```
+
+### Install on phone
+
+Transfer the `.apk` file to your Android device (USB, email, etc.) and open it. Enable **"Install from unknown sources"** in Settings > Security if prompted.
+
+## Project Structure
+
+```
+app/
+├── capacitor.config.ts          Capacitor configuration
+├── vite.config.ts               Vite build settings
+├── tailwind.config.js           Tailwind CSS theme config
+├── public/
+│   ├── icon.svg                 App icon
+│   └── manifest.webmanifest     PWA manifest
+└── src/
+    ├── main.tsx                 Entry point
+    ├── App.tsx                  Root component (Onboarding or Main)
+    ├── components/
+    │   ├── ItemDialog.tsx       Edit dialog for maintenance items
+    │   ├── ItemRow.tsx          Row component for maintenance items
+    │   ├── itemShared.tsx       Shared icons, styles, status formatting
+    │   └── ui/                  40+ shadcn/ui components
+    ├── data/
+    │   └── carProfiles.ts       Car maintenance interval definitions
+    ├── hooks/
+    │   └── use-mobile.ts        Mobile breakpoint detection
+    ├── lib/
+    │   ├── i18n.ts              Internationalization (FR/EN)
+    │   ├── status.ts            Maintenance status computation
+    │   ├── store.tsx            React Context state management
+    │   └── utils.ts             Utility functions
+    ├── pages/
+    │   ├── Main.tsx             Main app with tab navigation
+    │   └── Onboarding.tsx       First-time setup wizard
+    ├── sections/
+    │   ├── Dashboard.tsx        Dashboard view
+    │   ├── Fuel.tsx             Fuel tracking view
+    │   ├── Maintenance.tsx      Maintenance list view
+    │   └── Settings.tsx         Settings view
+    └── types/
+        └── index.ts             TypeScript type definitions
+```
+
+## Supported Vehicles
+
+- Toyota Yaris (1999+, timing chain)
+- Peugeot 106 (1991-2003, timing belt)
