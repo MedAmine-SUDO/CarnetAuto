@@ -1,0 +1,302 @@
+import type { Lang } from '@/types';
+
+const fr: Record<string, string> = {
+  appName: 'Carnet Auto',
+  tagline: 'Entretien de votre voiture, simplement.',
+
+  // nav
+  'nav.home': 'Accueil',
+  'nav.maintenance': 'Entretien',
+  'nav.fuel': 'Carburant',
+  'nav.settings': 'Réglages',
+
+  // onboarding
+  'ob.welcome': 'Bienvenue',
+  'ob.welcomeSub': 'Suivez la vidange, l’assurance, la visite technique et la consommation de votre voiture. Sans compte, tout reste sur votre téléphone.',
+  'ob.chooseCar': 'Choisissez votre voiture',
+  'ob.fuelType': 'Motorisation',
+  'ob.petrol': 'Essence',
+  'ob.diesel': 'Diesel',
+  'ob.year': 'Année (optionnel)',
+  'ob.yearPh': 'ex. 2008',
+  'ob.currentKm': 'Kilométrage actuel (km)',
+  'ob.currentKmPh': 'ex. 85 000',
+  'ob.lastOil': 'Dernière vidange (optionnel)',
+  'ob.lastOilKm': 'au km',
+  'ob.lastOilDate': 'le',
+  'ob.docs': 'Documents (optionnel)',
+  'ob.insuranceExp': 'Expiration assurance',
+  'ob.inspectionExp': 'Prochaine visite technique',
+  'ob.start': 'C’est parti',
+  'ob.next': 'Continuer',
+  'ob.back': 'Retour',
+  'ob.kmRequired': 'Entrez un kilométrage valide',
+  'ob.supportedSoon': 'D’autres modèles arriveront bientôt. Les intervalles sont préconfigurés pour votre voiture et modifiables.',
+
+  // dashboard
+  'dash.odometer': 'Kilométrage',
+  'dash.updateKm': 'Mettre à jour',
+  'dash.perDay': '≈ {v} km/jour',
+  'dash.allGood': 'Tout est en ordre',
+  'dash.allGoodSub': 'Aucun entretien à prévoir pour le moment.',
+  'dash.dueCount': '{n} entretien(s) en retard',
+  'dash.soonCount': '{n} entretien(s) à prévoir',
+  'dash.attention': 'À surveiller',
+  'dash.viewAll': 'Tout voir',
+  'dash.documents': 'Documents',
+  'dash.insurance': 'Assurance',
+  'dash.inspection': 'Visite technique',
+  'dash.notSet': 'Non renseignée',
+  'dash.expiredSince': 'Expirée depuis {n} j',
+  'dash.expiresIn': 'Expire dans {n} j',
+  'dash.expiresToday': 'Expire aujourd’hui',
+  'dash.trackHint': 'Astuce : ouvrez chaque élément d’entretien pour enregistrer la dernière intervention, le suivi démarre automatiquement.',
+  'dash.newKm': 'Nouveau kilométrage',
+  'dash.save': 'Enregistrer',
+  'dash.cancel': 'Annuler',
+  'dash.editDate': 'Modifier la date',
+
+  // items
+  'item.oil': 'Vidange (huile + filtre)',
+  'item.airFilter': 'Filtre à air',
+  'item.fuelFilter': 'Filtre à carburant',
+  'item.sparkPlugs': 'Bougies d’allumage',
+  'item.timingBelt': 'Courroie de distribution',
+  'item.coolant': 'Liquide de refroidissement',
+  'item.brakeFluid': 'Liquide de frein',
+  'item.brakePads': 'Plaquettes de frein',
+  'item.tires': 'Pneus',
+  'item.battery': 'Batterie',
+
+  // status
+  'st.never': 'Pas encore suivi',
+  'st.neverSub': 'Enregistrez la dernière intervention',
+  'st.leftKm': 'Encore {v}',
+  'st.leftDays': 'Encore {d} j',
+  'st.leftMonths': 'Encore {m} mois',
+  'st.overKm': 'Dépassé de {v}',
+  'st.overDays': 'Dépassé de {d} j',
+  'st.overMonths': 'Dépassé de {m} mois',
+  'st.estDate': '≈ le {d}',
+  'st.ok': 'OK',
+  'st.soon': 'Bientôt',
+  'st.due': 'En retard',
+
+  // maintenance screen
+  'mt.title': 'Entretien',
+  'mt.chainNote': 'Votre moteur a une distribution à chaîne : pas de remplacement périodique prévu.',
+  'mt.criticalNote': 'Critique : une courroie cassée peut détruire le moteur.',
+  'mt.last': 'Dernier : {d} à {v}',
+  'mt.interval': 'Tous les {km} / {mo}',
+  'mt.everyKm': '{v} km',
+  'mt.everyMo': '{n} mois',
+  'mt.markDone': 'Fait aujourd’hui ({v})',
+  'mt.details': 'Détails',
+  'mt.lastDate': 'Date du dernier entretien',
+  'mt.lastKm': 'Kilométrage du dernier entretien',
+  'mt.intKm': 'Intervalle (km) — 0 = ignoré',
+  'mt.intMo': 'Intervalle (mois) — 0 = ignoré',
+  'mt.saveChanges': 'Enregistrer',
+  'mt.removeRecord': 'Effacer le suivi',
+  'mt.close': 'Fermer',
+
+  // fuel
+  'fuel.title': 'Carburant',
+  'fuel.add': 'Ajouter un plein',
+  'fuel.date': 'Date',
+  'fuel.km': 'Kilométrage',
+  'fuel.liters': 'Litres',
+  'fuel.price': 'Prix total (optionnel)',
+  'fuel.save': 'Ajouter',
+  'fuel.avg': 'Consommation moyenne',
+  'fuel.last': 'Dernier plein',
+  'fuel.total': 'Pleins enregistrés',
+  'fuel.history': 'Historique',
+  'fuel.empty': 'Aucun plein pour le moment. Ajoutez votre premier plein pour suivre la consommation.',
+  'fuel.needTwo': 'Ajoutez un 2ᵉ plein pour calculer la consommation.',
+  'fuel.invalid': 'Vérifiez le kilométrage et les litres',
+  'fuel.note': 'Consommation calculée entre deux pleins (méthode plein à plein).',
+
+  // settings
+  'set.title': 'Réglages',
+  'set.language': 'Langue',
+  'set.vehicle': 'Véhicule',
+  'set.changeCar': 'Changer de véhicule',
+  'set.changeCarWarn': 'Les données d’entretien et de carburant seront effacées pour configurer un nouveau véhicule.',
+  'set.data': 'Données',
+  'set.dataNote': 'Toutes vos données sont stockées uniquement sur ce téléphone. Aucun compte, aucun envoi en ligne.',
+  'set.reset': 'Réinitialiser l’application',
+  'set.resetWarn': 'Toutes les données seront définitivement effacées.',
+  'set.confirm': 'Confirmer',
+  'set.cancel': 'Annuler',
+  'set.about': 'À propos',
+  'set.version': 'Version 1.0 — voitures prises en charge : Toyota Yaris, Peugeot 106.',
+  'set.editKm': 'Corriger le kilométrage',
+
+  'common.km': 'km',
+  'common.l100': 'L/100',
+};
+
+const en: Record<string, string> = {
+  appName: 'Carnet Auto',
+  tagline: 'Your car maintenance, made simple.',
+
+  'nav.home': 'Home',
+  'nav.maintenance': 'Maintenance',
+  'nav.fuel': 'Fuel',
+  'nav.settings': 'Settings',
+
+  'ob.welcome': 'Welcome',
+  'ob.welcomeSub': 'Track oil changes, insurance, roadworthiness inspection and fuel consumption. No account — everything stays on your phone.',
+  'ob.chooseCar': 'Choose your car',
+  'ob.fuelType': 'Engine',
+  'ob.petrol': 'Petrol',
+  'ob.diesel': 'Diesel',
+  'ob.year': 'Year (optional)',
+  'ob.yearPh': 'e.g. 2008',
+  'ob.currentKm': 'Current odometer (km)',
+  'ob.currentKmPh': 'e.g. 85,000',
+  'ob.lastOil': 'Last oil change (optional)',
+  'ob.lastOilKm': 'at km',
+  'ob.lastOilDate': 'on',
+  'ob.docs': 'Documents (optional)',
+  'ob.insuranceExp': 'Insurance expiry',
+  'ob.inspectionExp': 'Next inspection',
+  'ob.start': 'Get started',
+  'ob.next': 'Continue',
+  'ob.back': 'Back',
+  'ob.kmRequired': 'Enter a valid odometer value',
+  'ob.supportedSoon': 'More models coming soon. Intervals are pre-configured for your car and fully editable.',
+
+  'dash.odometer': 'Odometer',
+  'dash.updateKm': 'Update',
+  'dash.perDay': '≈ {v} km/day',
+  'dash.allGood': 'All good',
+  'dash.allGoodSub': 'No maintenance due right now.',
+  'dash.dueCount': '{n} item(s) overdue',
+  'dash.soonCount': '{n} item(s) coming up',
+  'dash.attention': 'Needs attention',
+  'dash.viewAll': 'View all',
+  'dash.documents': 'Documents',
+  'dash.insurance': 'Insurance',
+  'dash.inspection': 'Inspection',
+  'dash.notSet': 'Not set',
+  'dash.expiredSince': 'Expired {n} d ago',
+  'dash.expiresIn': 'Expires in {n} d',
+  'dash.expiresToday': 'Expires today',
+  'dash.trackHint': 'Tip: open each maintenance item and log the last service — tracking starts automatically.',
+  'dash.newKm': 'New odometer value',
+  'dash.save': 'Save',
+  'dash.cancel': 'Cancel',
+  'dash.editDate': 'Edit date',
+
+  'item.oil': 'Oil change (oil + filter)',
+  'item.airFilter': 'Air filter',
+  'item.fuelFilter': 'Fuel filter',
+  'item.sparkPlugs': 'Spark plugs',
+  'item.timingBelt': 'Timing belt',
+  'item.coolant': 'Coolant',
+  'item.brakeFluid': 'Brake fluid',
+  'item.brakePads': 'Brake pads',
+  'item.tires': 'Tires',
+  'item.battery': 'Battery',
+
+  'st.never': 'Not tracked yet',
+  'st.neverSub': 'Log the last service to start',
+  'st.leftKm': '{v} left',
+  'st.leftDays': '{d} d left',
+  'st.leftMonths': '{m} mo left',
+  'st.overKm': 'Overdue by {v}',
+  'st.overDays': 'Overdue by {d} d',
+  'st.overMonths': 'Overdue by {m} mo',
+  'st.estDate': '≈ {d}',
+  'st.ok': 'OK',
+  'st.soon': 'Soon',
+  'st.due': 'Overdue',
+
+  'mt.title': 'Maintenance',
+  'mt.chainNote': 'Your engine has a timing chain: no periodic replacement needed.',
+  'mt.criticalNote': 'Critical: a snapped belt can destroy the engine.',
+  'mt.last': 'Last: {d} at {v}',
+  'mt.interval': 'Every {km} / {mo}',
+  'mt.everyKm': '{v} km',
+  'mt.everyMo': '{n} mo',
+  'mt.markDone': 'Done today ({v})',
+  'mt.details': 'Details',
+  'mt.lastDate': 'Last service date',
+  'mt.lastKm': 'Odometer at last service',
+  'mt.intKm': 'Interval (km) — 0 = ignored',
+  'mt.intMo': 'Interval (months) — 0 = ignored',
+  'mt.saveChanges': 'Save',
+  'mt.removeRecord': 'Clear tracking',
+  'mt.close': 'Close',
+
+  'fuel.title': 'Fuel',
+  'fuel.add': 'Add a fill-up',
+  'fuel.date': 'Date',
+  'fuel.km': 'Odometer',
+  'fuel.liters': 'Liters',
+  'fuel.price': 'Total price (optional)',
+  'fuel.save': 'Add',
+  'fuel.avg': 'Average consumption',
+  'fuel.last': 'Last fill-up',
+  'fuel.total': 'Fill-ups logged',
+  'fuel.history': 'History',
+  'fuel.empty': 'No fill-ups yet. Add your first one to start tracking consumption.',
+  'fuel.needTwo': 'Add a 2nd fill-up to compute consumption.',
+  'fuel.invalid': 'Check odometer and liters',
+  'fuel.note': 'Consumption is computed between fill-ups (full-to-full method).',
+
+  'set.title': 'Settings',
+  'set.language': 'Language',
+  'set.vehicle': 'Vehicle',
+  'set.changeCar': 'Change vehicle',
+  'set.changeCarWarn': 'Maintenance and fuel data will be erased to set up a new vehicle.',
+  'set.data': 'Data',
+  'set.dataNote': 'All your data is stored only on this phone. No account, nothing sent online.',
+  'set.reset': 'Reset the app',
+  'set.resetWarn': 'All data will be permanently erased.',
+  'set.confirm': 'Confirm',
+  'set.cancel': 'Cancel',
+  'set.about': 'About',
+  'set.version': 'Version 1.0 — supported cars: Toyota Yaris, Peugeot 106.',
+  'set.editKm': 'Correct odometer',
+
+  'common.km': 'km',
+  'common.l100': 'L/100',
+};
+
+export const translations: Record<Lang, Record<string, string>> = { fr, en };
+
+export function makeT(lang: Lang) {
+  return (key: string, vars?: Record<string, string | number>): string => {
+    let s = translations[lang][key] ?? translations.fr[key] ?? key;
+    if (vars) {
+      for (const [k, v] of Object.entries(vars)) {
+        s = s.replaceAll(`{${k}}`, String(v));
+      }
+    }
+    return s;
+  };
+}
+
+export function fmtKm(km: number, lang: Lang): string {
+  return `${new Intl.NumberFormat(lang === 'fr' ? 'fr-FR' : 'en-GB').format(Math.round(km))} km`;
+}
+
+export function fmtDate(iso: string, lang: Lang): string {
+  const d = new Date(iso + (iso.length === 10 ? 'T00:00:00' : ''));
+  if (isNaN(d.getTime())) return iso;
+  return new Intl.DateTimeFormat(lang === 'fr' ? 'fr-FR' : 'en-GB', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  }).format(d);
+}
+
+export function todayISO(): string {
+  const d = new Date();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${d.getFullYear()}-${m}-${day}`;
+}
