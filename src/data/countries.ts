@@ -3,7 +3,10 @@ export type FuelFamily = 'petrol' | 'diesel';
 export interface FuelOption {
   value: string;
   family: FuelFamily;
-  labelKey: string;
+  /** Pump name as written at stations in this country — NOT translated. */
+  name: string;
+  /** Localized explanation of what this fuel is (i18n key). */
+  hintKey: string;
 }
 
 export interface Country {
@@ -13,42 +16,63 @@ export interface Country {
   fuels: FuelOption[];
 }
 
-const f = (value: string, family: FuelFamily, labelKey: string): FuelOption => ({ value, family, labelKey });
+const f = (value: string, family: FuelFamily, name: string, hintKey: string): FuelOption => ({
+  value,
+  family,
+  name,
+  hintKey,
+});
 
 export const COUNTRIES: Country[] = [
   {
     code: 'TN',
     flag: '🇹🇳',
     nameKey: 'country.TN',
-    fuels: [f('sp95', 'petrol', 'fuel.sp95'), f('sp98', 'petrol', 'fuel.sp98'), f('mazout', 'diesel', 'fuel.mazout')],
+    fuels: [
+      f('sp95', 'petrol', 'Sans plomb 95', 'fuelHint.standardPetrol'),
+      f('sp98', 'petrol', 'Sans plomb 98', 'fuelHint.premiumPetrol'),
+      f('mazout', 'diesel', 'Mazout', 'fuelHint.diesel'),
+    ],
   },
   {
     code: 'DZ',
     flag: '🇩🇿',
     nameKey: 'country.DZ',
-    fuels: [f('sp95', 'petrol', 'fuel.sp95'), f('sp98', 'petrol', 'fuel.sp98'), f('gasoil', 'diesel', 'fuel.gasoil')],
+    fuels: [
+      f('sp95', 'petrol', 'Sans plomb 95', 'fuelHint.standardPetrol'),
+      f('sp98', 'petrol', 'Sans plomb 98', 'fuelHint.premiumPetrol'),
+      f('gasoil', 'diesel', 'Gasoil', 'fuelHint.diesel'),
+    ],
   },
   {
     code: 'MA',
     flag: '🇲🇦',
     nameKey: 'country.MA',
-    fuels: [f('sp95', 'petrol', 'fuel.sp95'), f('sp98', 'petrol', 'fuel.sp98'), f('gazole', 'diesel', 'fuel.gazole')],
+    fuels: [
+      f('sp95', 'petrol', 'Sans plomb 95', 'fuelHint.standardPetrol'),
+      f('sp98', 'petrol', 'Sans plomb 98', 'fuelHint.premiumPetrol'),
+      f('gazole', 'diesel', 'Gazole', 'fuelHint.diesel'),
+    ],
   },
   {
     code: 'LY',
     flag: '🇱🇾',
     nameKey: 'country.LY',
-    fuels: [f('sp95', 'petrol', 'fuel.sp95'), f('sp98', 'petrol', 'fuel.sp98'), f('diesel', 'diesel', 'fuel.diesel')],
+    fuels: [
+      f('sp95', 'petrol', 'Essence 95', 'fuelHint.standardPetrol'),
+      f('sp98', 'petrol', 'Essence 98', 'fuelHint.premiumPetrol'),
+      f('diesel', 'diesel', 'Diesel', 'fuelHint.diesel'),
+    ],
   },
   {
     code: 'EG',
     flag: '🇪🇬',
     nameKey: 'country.EG',
     fuels: [
-      f('octane80', 'petrol', 'fuel.octane80'),
-      f('octane92', 'petrol', 'fuel.octane92'),
-      f('octane95', 'petrol', 'fuel.octane95'),
-      f('diesel', 'diesel', 'fuel.diesel'),
+      f('octane80', 'petrol', 'Benzine 80', 'fuelHint.lowOctane'),
+      f('octane92', 'petrol', 'Benzine 92', 'fuelHint.lowOctane'),
+      f('octane95', 'petrol', 'Benzine 95', 'fuelHint.standardPetrol'),
+      f('diesel', 'diesel', 'Diesel', 'fuelHint.diesel'),
     ],
   },
   {
@@ -56,12 +80,12 @@ export const COUNTRIES: Country[] = [
     flag: '🇫🇷',
     nameKey: 'country.FR',
     fuels: [
-      f('sp95e5', 'petrol', 'fuel.sp95e5'),
-      f('sp95e10', 'petrol', 'fuel.sp95e10'),
-      f('sp98', 'petrol', 'fuel.sp98'),
-      f('gazoleb7', 'diesel', 'fuel.gazoleb7'),
-      f('gazoleb10', 'diesel', 'fuel.gazoleb10'),
-      f('gpl', 'petrol', 'fuel.gpl'),
+      f('sp95e5', 'petrol', 'Sans plomb 95-E5', 'fuelHint.standardPetrol'),
+      f('sp95e10', 'petrol', 'Sans plomb 95-E10', 'fuelHint.standardPetrol'),
+      f('sp98', 'petrol', 'Sans plomb 98', 'fuelHint.premiumPetrol'),
+      f('gazoleb7', 'diesel', 'Gazole B7', 'fuelHint.biodiesel'),
+      f('gazoleb10', 'diesel', 'Gazole B10', 'fuelHint.biodiesel'),
+      f('gpl', 'petrol', 'GPLc', 'fuelHint.lpg'),
     ],
   },
   {
@@ -69,11 +93,11 @@ export const COUNTRIES: Country[] = [
     flag: '🇧🇪',
     nameKey: 'country.BE',
     fuels: [
-      f('sp95e5', 'petrol', 'fuel.sp95e5'),
-      f('sp95e10', 'petrol', 'fuel.sp95e10'),
-      f('sp98', 'petrol', 'fuel.sp98'),
-      f('gazoleb7', 'diesel', 'fuel.gazoleb7'),
-      f('gazoleb10', 'diesel', 'fuel.gazoleb10'),
+      f('sp95e5', 'petrol', 'Sans plomb 95-E5', 'fuelHint.standardPetrol'),
+      f('sp95e10', 'petrol', 'Sans plomb 95-E10', 'fuelHint.standardPetrol'),
+      f('sp98', 'petrol', 'Sans plomb 98', 'fuelHint.premiumPetrol'),
+      f('gazoleb7', 'diesel', 'Gazole B7', 'fuelHint.biodiesel'),
+      f('gazoleb10', 'diesel', 'Gazole B10', 'fuelHint.biodiesel'),
     ],
   },
   {
@@ -81,11 +105,11 @@ export const COUNTRIES: Country[] = [
     flag: '🇪🇸',
     nameKey: 'country.ES',
     fuels: [
-      f('gasolina95', 'petrol', 'fuel.gasolina95'),
-      f('gasolina98', 'petrol', 'fuel.gasolina98'),
-      f('diesel', 'diesel', 'fuel.diesel'),
-      f('dieselplus', 'diesel', 'fuel.dieselplus'),
-      f('gpl', 'petrol', 'fuel.gpl'),
+      f('gasolina95', 'petrol', 'Gasolina 95', 'fuelHint.standardPetrol'),
+      f('gasolina98', 'petrol', 'Gasolina 98', 'fuelHint.premiumPetrol'),
+      f('diesel', 'diesel', 'Diésel', 'fuelHint.diesel'),
+      f('dieselplus', 'diesel', 'Diésel Plus', 'fuelHint.premiumDiesel'),
+      f('gpl', 'petrol', 'GLP', 'fuelHint.lpg'),
     ],
   },
   {
@@ -93,10 +117,10 @@ export const COUNTRIES: Country[] = [
     flag: '🇮🇹',
     nameKey: 'country.IT',
     fuels: [
-      f('benzina95', 'petrol', 'fuel.benzina95'),
-      f('benzina98', 'petrol', 'fuel.benzina98'),
-      f('diesel', 'diesel', 'fuel.diesel'),
-      f('gpl', 'petrol', 'fuel.gpl'),
+      f('benzina95', 'petrol', 'Benzina 95', 'fuelHint.standardPetrol'),
+      f('benzina98', 'petrol', 'Benzina 98', 'fuelHint.premiumPetrol'),
+      f('diesel', 'diesel', 'Diesel', 'fuelHint.diesel'),
+      f('gpl', 'petrol', 'GPL', 'fuelHint.lpg'),
     ],
   },
   {
@@ -104,11 +128,11 @@ export const COUNTRIES: Country[] = [
     flag: '🇩🇪',
     nameKey: 'country.DE',
     fuels: [
-      f('superE5', 'petrol', 'fuel.superE5'),
-      f('superE10', 'petrol', 'fuel.superE10'),
-      f('superPlus', 'petrol', 'fuel.superPlus'),
-      f('dieselB7', 'diesel', 'fuel.dieselB7'),
-      f('dieselB10', 'diesel', 'fuel.dieselB10'),
+      f('superE5', 'petrol', 'Super E5', 'fuelHint.standardPetrol'),
+      f('superE10', 'petrol', 'Super E10', 'fuelHint.standardPetrol'),
+      f('superPlus', 'petrol', 'Super Plus (98)', 'fuelHint.premiumPetrol'),
+      f('dieselB7', 'diesel', 'Diesel B7', 'fuelHint.biodiesel'),
+      f('dieselB10', 'diesel', 'Diesel B10', 'fuelHint.biodiesel'),
     ],
   },
   {
@@ -116,11 +140,11 @@ export const COUNTRIES: Country[] = [
     flag: '🇳🇱',
     nameKey: 'country.NL',
     fuels: [
-      f('euro95e5', 'petrol', 'fuel.euro95e5'),
-      f('euro95e10', 'petrol', 'fuel.euro95e10'),
-      f('euro98', 'petrol', 'fuel.euro98'),
-      f('diesel', 'diesel', 'fuel.diesel'),
-      f('premiumDiesel', 'diesel', 'fuel.premiumDiesel'),
+      f('euro95e5', 'petrol', 'Euro 95 (E5)', 'fuelHint.standardPetrol'),
+      f('euro95e10', 'petrol', 'Euro 95 (E10)', 'fuelHint.standardPetrol'),
+      f('euro98', 'petrol', 'Euro 98', 'fuelHint.premiumPetrol'),
+      f('diesel', 'diesel', 'Diesel', 'fuelHint.diesel'),
+      f('premiumDiesel', 'diesel', 'Premium Diesel', 'fuelHint.premiumDiesel'),
     ],
   },
   {
@@ -128,11 +152,11 @@ export const COUNTRIES: Country[] = [
     flag: '🇬🇧',
     nameKey: 'country.GB',
     fuels: [
-      f('unleadedE5', 'petrol', 'fuel.unleadedE5'),
-      f('unleadedE10', 'petrol', 'fuel.unleadedE10'),
-      f('superUnleaded', 'petrol', 'fuel.superUnleaded'),
-      f('dieselB7', 'diesel', 'fuel.dieselB7'),
-      f('premiumDiesel', 'diesel', 'fuel.premiumDiesel'),
+      f('unleadedE5', 'petrol', 'Unleaded (E5)', 'fuelHint.standardPetrol'),
+      f('unleadedE10', 'petrol', 'Unleaded (E10)', 'fuelHint.standardPetrol'),
+      f('superUnleaded', 'petrol', 'Super Unleaded', 'fuelHint.premiumPetrol'),
+      f('dieselB7', 'diesel', 'Diesel (B7)', 'fuelHint.biodiesel'),
+      f('premiumDiesel', 'diesel', 'Premium Diesel', 'fuelHint.premiumDiesel'),
     ],
   },
   {
@@ -140,10 +164,10 @@ export const COUNTRIES: Country[] = [
     flag: '🇵🇹',
     nameKey: 'country.PT',
     fuels: [
-      f('gasolina95', 'petrol', 'fuel.gasolina95'),
-      f('gasolina98', 'petrol', 'fuel.gasolina98'),
-      f('diesel', 'diesel', 'fuel.diesel'),
-      f('dieselplus', 'diesel', 'fuel.dieselplus'),
+      f('gasolina95', 'petrol', 'Gasolina 95', 'fuelHint.standardPetrol'),
+      f('gasolina98', 'petrol', 'Gasolina 98', 'fuelHint.premiumPetrol'),
+      f('diesel', 'diesel', 'Gasóleo', 'fuelHint.diesel'),
+      f('dieselplus', 'diesel', 'Gasóleo Plus', 'fuelHint.premiumDiesel'),
     ],
   },
   {
@@ -151,10 +175,10 @@ export const COUNTRIES: Country[] = [
     flag: '🇺🇸',
     nameKey: 'country.US',
     fuels: [
-      f('regular', 'petrol', 'fuel.regular'),
-      f('midgrade', 'petrol', 'fuel.midgrade'),
-      f('premium', 'petrol', 'fuel.premium'),
-      f('diesel', 'diesel', 'fuel.diesel'),
+      f('regular', 'petrol', 'Regular (87)', 'fuelHint.regular'),
+      f('midgrade', 'petrol', 'Mid-Grade (89)', 'fuelHint.midgrade'),
+      f('premium', 'petrol', 'Premium (91-93)', 'fuelHint.highOctane'),
+      f('diesel', 'diesel', 'Diesel', 'fuelHint.diesel'),
     ],
   },
   {
@@ -162,10 +186,10 @@ export const COUNTRIES: Country[] = [
     flag: '🇨🇦',
     nameKey: 'country.CA',
     fuels: [
-      f('regular', 'petrol', 'fuel.regular'),
-      f('midgrade', 'petrol', 'fuel.midgrade'),
-      f('premium', 'petrol', 'fuel.premium'),
-      f('diesel', 'diesel', 'fuel.diesel'),
+      f('regular', 'petrol', 'Regular (87)', 'fuelHint.regular'),
+      f('midgrade', 'petrol', 'Mid-Grade (89)', 'fuelHint.midgrade'),
+      f('premium', 'petrol', 'Premium (91-93)', 'fuelHint.highOctane'),
+      f('diesel', 'diesel', 'Diesel', 'fuelHint.diesel'),
     ],
   },
   {
@@ -173,9 +197,9 @@ export const COUNTRIES: Country[] = [
     flag: '🇸🇦',
     nameKey: 'country.SA',
     fuels: [
-      f('gulf91', 'petrol', 'fuel.gulf91'),
-      f('gulf95', 'petrol', 'fuel.gulf95'),
-      f('diesel', 'diesel', 'fuel.diesel'),
+      f('gulf91', 'petrol', 'Petrol 91', 'fuelHint.lowOctane'),
+      f('gulf95', 'petrol', 'Petrol 95', 'fuelHint.standardPetrol'),
+      f('diesel', 'diesel', 'Diesel', 'fuelHint.diesel'),
     ],
   },
   {
@@ -183,9 +207,9 @@ export const COUNTRIES: Country[] = [
     flag: '🇦🇪',
     nameKey: 'country.AE',
     fuels: [
-      f('special95', 'petrol', 'fuel.special95'),
-      f('super98', 'petrol', 'fuel.super98'),
-      f('diesel', 'diesel', 'fuel.diesel'),
+      f('special95', 'petrol', 'Special 95', 'fuelHint.standardPetrol'),
+      f('super98', 'petrol', 'Super 98', 'fuelHint.premiumPetrol'),
+      f('diesel', 'diesel', 'Diesel', 'fuelHint.diesel'),
     ],
   },
   {
@@ -193,9 +217,9 @@ export const COUNTRIES: Country[] = [
     flag: '🇰🇼',
     nameKey: 'country.KW',
     fuels: [
-      f('premium91', 'petrol', 'fuel.premium91'),
-      f('super98', 'petrol', 'fuel.super98'),
-      f('diesel', 'diesel', 'fuel.diesel'),
+      f('premium91', 'petrol', 'Premium 91', 'fuelHint.lowOctane'),
+      f('super98', 'petrol', 'Super 98', 'fuelHint.premiumPetrol'),
+      f('diesel', 'diesel', 'Diesel', 'fuelHint.diesel'),
     ],
   },
   {
@@ -203,9 +227,9 @@ export const COUNTRIES: Country[] = [
     flag: '🇹🇷',
     nameKey: 'country.TR',
     fuels: [
-      f('benzin95', 'petrol', 'fuel.benzin95'),
-      f('benzin98', 'petrol', 'fuel.benzin98'),
-      f('mazot', 'diesel', 'fuel.mazot'),
+      f('benzin95', 'petrol', 'Benzin 95', 'fuelHint.standardPetrol'),
+      f('benzin98', 'petrol', 'Benzin 98', 'fuelHint.premiumPetrol'),
+      f('mazot', 'diesel', 'Mazot', 'fuelHint.diesel'),
     ],
   },
 ];

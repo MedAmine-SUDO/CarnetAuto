@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { useStore, useT } from '@/lib/store';
 import { getProfile } from '@/data/carProfiles';
 import { fuelOptionsForCountry } from '@/data/countries';
-import { SPEC_DEFS, specDef, currentSpec, type SpecCategory } from '@/data/specs';
+import { SPEC_DEFS, specDef, currentSpec, recommendedSpec, type SpecCategory } from '@/data/specs';
 import { fmtKm } from '@/lib/i18n';
 
 export default function VehicleSpecs({ onBack }: { onBack: () => void }) {
@@ -25,13 +25,16 @@ export default function VehicleSpecs({ onBack }: { onBack: () => void }) {
 
   const categories: SpecCategory[] = ['fuel', 'engine', 'fluids', 'tires', 'general'];
 
-  const optionsFor = (id: string) => (id === 'fuelType' ? fuelOptions : specDef(id)?.options);
+  const optionsFor = (
+    id: string,
+  ): { value: string; labelKey?: string; name?: string; hintKey?: string }[] =>
+    id === 'fuelType' ? fuelOptions : (specDef(id)?.options ?? []);
 
   const displayValue = (id: string, value: string) => {
     const def = specDef(id);
     if (def?.type === 'choice') {
       const opt = optionsFor(id)?.find((o) => o.value === value);
-      return opt ? t(opt.labelKey) : value || t('spec.notSet');
+      return opt ? (opt.name ?? t(opt.labelKey ?? '')) : value || t('spec.notSet');
     }
     return value || t('spec.notSet');
   };
@@ -128,7 +131,41 @@ export default function VehicleSpecs({ onBack }: { onBack: () => void }) {
               <DialogTitle>{t(`spec.${editingDef.id}`)}</DialogTitle>
             </DialogHeader>
 
-            {editingDef.type === 'choice' ? (
+            {editingDef.type === 'choice' && editingDef.id === 'fuelType' ? (
+              <div className="space-y-2">
+                {optionsFor(editingDef.id)?.map((opt) => {
+                  const selected = editValue === opt.value;
+                  const rec = recommendedSpec(editingDef.id, profile.id, fuel, country);
+                  return (
+                    <button
+                      key={opt.value}
+                      onClick={() => setEditValue(opt.value)}
+                      className={`w-full rounded-xl border px-4 py-3 text-left transition-colors ${
+                        selected ? 'bg-blue-600 border-blue-600' : 'bg-white border-slate-200'
+                      }`}
+                    >
+                      <span className="flex items-center justify-between gap-2">
+                        <span className={`text-[15px] font-semibold ${selected ? 'text-white' : 'text-slate-900'}`}>
+                          {opt.name}
+                        </span>
+                        {opt.value === rec && (
+                          <span
+                            className={`text-[10px] font-medium rounded-full px-2 py-0.5 ${
+                              selected ? 'bg-white/20 text-white' : 'bg-blue-50 text-blue-600'
+                            }`}
+                          >
+                            {t('spec.recommended')}
+                          </span>
+                        )}
+                      </span>
+                      <span className={`block text-[12px] mt-0.5 ${selected ? 'text-blue-100' : 'text-slate-500'}`}>
+                        {t(opt.hintKey ?? '')}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            ) : editingDef.type === 'choice' ? (
               <div className="grid grid-cols-3 gap-2">
                 {optionsFor(editingDef.id)?.map((opt) => (
                   <button
@@ -140,7 +177,7 @@ export default function VehicleSpecs({ onBack }: { onBack: () => void }) {
                         : 'bg-white text-slate-600 border-slate-200'
                     }`}
                   >
-                    {t(opt.labelKey)}
+                    {t(opt.labelKey ?? '')}
                   </button>
                 ))}
               </div>
