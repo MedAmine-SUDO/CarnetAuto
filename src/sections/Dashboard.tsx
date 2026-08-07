@@ -10,6 +10,7 @@ import { avgKmPerDay, computeStatus, docStatus, urgencyRank, type DocStatus } fr
 import { fmtKm } from '@/lib/i18n';
 import ItemRow from '@/components/ItemRow';
 import ItemDialog from '@/components/ItemDialog';
+import ScanOdometerButton from '@/components/ScanOdometerButton';
 import type { DocsState, MaintenanceItemDef } from '@/types';
 
 export default function Dashboard({ onGoToMaintenance }: { onGoToMaintenance: () => void }) {
@@ -171,6 +172,7 @@ export default function Dashboard({ onGoToMaintenance }: { onGoToMaintenance: ()
             className="h-12 rounded-xl text-lg"
             autoFocus
           />
+          <ScanOdometerButton onDetected={(v) => setKmValue(String(v))} />
           <div className="flex gap-2">
             <Button variant="outline" onClick={() => setKmOpen(false)} className="flex-1 h-11 rounded-xl">{t('dash.cancel')}</Button>
             <Button onClick={saveKm} className="flex-1 h-11 rounded-xl bg-blue-600 hover:bg-blue-700">{t('dash.save')}</Button>

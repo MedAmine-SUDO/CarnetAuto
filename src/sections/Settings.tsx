@@ -12,6 +12,7 @@ import { useNav } from '@/lib/navigation';
 import { getProfile } from '@/data/carProfiles';
 import { countryByCode } from '@/data/countries';
 import { fmtKm } from '@/lib/i18n';
+import ScanOdometerButton from '@/components/ScanOdometerButton';
 import NotificationSettings from './NotificationSettings';
 import VehicleSpecs from './VehicleSpecs';
 import CountrySettings from './CountrySettings';
@@ -201,6 +202,7 @@ export default function Settings() {
             <DialogTitle>{t('dash.newKm')}</DialogTitle>
           </DialogHeader>
           <Input inputMode="numeric" value={kmValue} onChange={(e) => setKmValue(e.target.value)} className="h-12 rounded-xl text-lg" autoFocus />
+          <ScanOdometerButton onDetected={(v) => setKmValue(String(v))} />
           <div className="flex gap-2">
             <Button variant="outline" onClick={() => setKmOpen(false)} className="flex-1 h-11 rounded-xl">{t('dash.cancel')}</Button>
             <Button

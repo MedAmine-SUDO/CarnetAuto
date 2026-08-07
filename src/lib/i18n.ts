@@ -55,6 +55,10 @@ const fr: Record<string, string> = {
   'dash.save': 'Enregistrer',
   'dash.cancel': 'Annuler',
   'dash.editDate': 'Modifier la date',
+  'odom.scan': 'Scanner le compteur (photo)',
+  'odom.scan.nonative': 'Disponible dans l’application installée sur le téléphone.',
+  'odom.scan.notFound': 'Aucun chiffre reconnu. Essayez avec un meilleur cadrage.',
+  'odom.scan.failed': 'Impossible de lire l’image. Réessayez.',
 
   // items
   'item.oil': 'Vidange (huile + filtre)',
@@ -306,6 +310,10 @@ const en: Record<string, string> = {
   'dash.save': 'Save',
   'dash.cancel': 'Cancel',
   'dash.editDate': 'Edit date',
+  'odom.scan': 'Scan the odometer (photo)',
+  'odom.scan.nonative': 'Available in the app installed on your phone.',
+  'odom.scan.notFound': 'No number detected. Try again with better framing.',
+  'odom.scan.failed': 'Could not read the image. Try again.',
 
   'item.oil': 'Oil change (oil + filter)',
   'item.airFilter': 'Air filter',
