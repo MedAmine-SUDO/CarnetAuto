@@ -19,11 +19,8 @@ export const SPEC_DEFS: SpecDef[] = [
     type: 'choice',
     options: [
       { value: 'sp95', labelKey: 'spec.fuel.sp95' },
-      { value: 'sp95e10', labelKey: 'spec.fuel.sp95e10' },
       { value: 'sp98', labelKey: 'spec.fuel.sp98' },
-      { value: 'b7', labelKey: 'spec.fuel.b7' },
-      { value: 'b10', labelKey: 'spec.fuel.b10' },
-      { value: 'b30', labelKey: 'spec.fuel.b30' },
+      { value: 'mazout', labelKey: 'spec.fuel.mazout' },
     ],
   },
   { id: 'engineCode', category: 'engine', type: 'text' },
@@ -74,7 +71,7 @@ export function specDef(id: string): SpecDef | undefined {
 
 /** Recommended value for a spec given the car profile and engine type. */
 export function recommendedSpec(id: string, profileId: string, fuel: FuelType): string {
-  if (id === 'fuelType') return fuel === 'petrol' ? 'sp95e10' : 'b7';
+  if (id === 'fuelType') return fuel === 'petrol' ? 'sp95' : 'mazout';
   if (id === 'sparkPlugs') return '4';
   return getProfile(profileId).specs[id] ?? '';
 }
