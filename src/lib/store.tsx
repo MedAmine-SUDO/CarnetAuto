@@ -1,8 +1,16 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
-import type { AppState, CarState, DocsState, FuelEntry, Lang, ServiceRecord } from '@/types';
+import type { AppState, CarState, DocsState, FuelEntry, Lang, NotificationSettings, ServiceRecord } from '@/types';
 import { makeT, todayISO } from './i18n';
+import { syncNotifications } from './notifications';
 
 const STORAGE_KEY = 'carnet-auto-v1';
+
+const DEFAULT_NOTIFS: NotificationSettings = {
+  enabled: false,
+  time: '09:00',
+  items: {},
+  docs: {},
+};
 
 const DEFAULT_STATE: AppState = {
   lang: 'fr',
@@ -14,6 +22,7 @@ const DEFAULT_STATE: AppState = {
   intervalOverrides: {},
   fuelLog: [],
   docs: { insurance: '', inspection: '' },
+  notifications: DEFAULT_NOTIFS,
 };
 
 function loadState(): AppState {
@@ -21,7 +30,12 @@ function loadState(): AppState {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return DEFAULT_STATE;
     const parsed = JSON.parse(raw);
-    return { ...DEFAULT_STATE, ...parsed, docs: { ...DEFAULT_STATE.docs, ...(parsed.docs ?? {}) } };
+    return {
+      ...DEFAULT_STATE,
+      ...parsed,
+      docs: { ...DEFAULT_STATE.docs, ...(parsed.docs ?? {}) },
+      notifications: { ...DEFAULT_NOTIFS, ...(parsed.notifications ?? {}) },
+    };
   } catch {
     return DEFAULT_STATE;
   }
@@ -47,6 +61,8 @@ interface StoreApi {
   addFuel: (e: Omit<FuelEntry, 'id'>) => void;
   deleteFuel: (id: string) => void;
   setDoc: (key: keyof DocsState, value: string) => void;
+  setNotifications: (patch: Partial<NotificationSettings>) => void;
+  setNotifPref: (category: 'items' | 'docs', key: string, pref: NotificationSettings['items'][string]) => void;
   resetAll: () => void;
 }
 
@@ -61,6 +77,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     } catch {
       // storage full or unavailable — app keeps working in memory
     }
+    syncNotifications(state);
   }, [state]);
 
   const api = useMemo<StoreApi>(() => ({
@@ -138,6 +155,14 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     deleteFuel: (id) => setState((s) => ({ ...s, fuelLog: s.fuelLog.filter((f) => f.id !== id) })),
 
     setDoc: (key, value) => setState((s) => ({ ...s, docs: { ...s.docs, [key]: value } })),
+
+    setNotifications: (patch) => setState((s) => ({ ...s, notifications: { ...s.notifications, ...patch } })),
+
+    setNotifPref: (category, key, pref) =>
+      setState((s) => ({
+        ...s,
+        notifications: { ...s.notifications, [category]: { ...s.notifications[category], [key]: pref } },
+      })),
 
     resetAll: () => setState((s) => ({ ...DEFAULT_STATE, lang: s.lang })),
   }), [state]);

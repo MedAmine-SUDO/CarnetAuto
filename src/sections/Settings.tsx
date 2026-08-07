@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Car, Database, Info, Languages, Pencil } from 'lucide-react';
+import { Bell, Car, ChevronRight, Database, Info, Languages, Pencil } from 'lucide-react';
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
@@ -10,18 +10,27 @@ import { Input } from '@/components/ui/input';
 import { useStore, useT } from '@/lib/store';
 import { getProfile } from '@/data/carProfiles';
 import { fmtKm } from '@/lib/i18n';
+import NotificationSettings from './NotificationSettings';
 
 export default function Settings() {
   const { state, setLang, updateOdometer, resetAll } = useStore();
   const t = useT();
   const lang = state.lang;
+  const notif = state.notifications;
 
   const [confirmReset, setConfirmReset] = useState(false);
   const [kmOpen, setKmOpen] = useState(false);
   const [kmValue, setKmValue] = useState('');
+  const [notifScreen, setNotifScreen] = useState(false);
+
+  if (notifScreen) return <NotificationSettings onBack={() => setNotifScreen(false)} />;
 
   if (!state.car) return null;
   const profile = getProfile(state.car.profileId);
+
+  const enabledCount =
+    Object.values(notif.items).filter((p) => p.enabled).length +
+    Object.values(notif.docs).filter((p) => p.enabled).length;
 
   return (
     <div className="space-y-4">
@@ -47,6 +56,30 @@ export default function Settings() {
           ))}
         </div>
       </div>
+
+      {/* notifications */}
+      <button
+        onClick={() => setNotifScreen(true)}
+        className="w-full bg-white rounded-2xl border border-slate-200/80 p-4 flex items-center justify-between gap-3 text-left"
+      >
+        <div>
+          <p className="font-semibold text-[15px] text-slate-900 flex items-center gap-2">
+            <Bell className="w-4 h-4 text-blue-600" />
+            {t('set.notif.title')}
+          </p>
+          <p className="text-[13px] text-slate-500 mt-0.5">
+            {notif.enabled
+              ? enabledCount > 0
+                ? `${t('set.notif.configured')} · ${t('set.notif.time')} ${notif.time}`
+                : t('set.notif.notConfigured')
+              : t('set.notif.notConfigured')}
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className={`h-2.5 w-2.5 rounded-full ${notif.enabled ? 'bg-green-500' : 'bg-slate-300'}`} />
+          <ChevronRight className="w-5 h-5 text-slate-400" />
+        </div>
+      </button>
 
       {/* vehicle */}
       <div className="bg-white rounded-2xl border border-slate-200/80 p-4 space-y-3">

@@ -49,6 +49,38 @@ export interface DocsState {
   inspection: string;       // visite technique
 }
 
+export type NotifLeadId = '1h' | '1d' | '3d' | '1w' | '2w' | '1m';
+
+export interface NotifLeadOption {
+  id: NotifLeadId;
+  days: number;
+}
+
+export const NOTIF_LEAD_OPTIONS: NotifLeadOption[] = [
+  { id: '1h', days: 1 / 24 },
+  { id: '1d', days: 1 },
+  { id: '3d', days: 3 },
+  { id: '1w', days: 7 },
+  { id: '2w', days: 14 },
+  { id: '1m', days: 30 },
+];
+
+export function leadDays(id: NotifLeadId): number {
+  return NOTIF_LEAD_OPTIONS.find((o) => o.id === id)?.days ?? 0;
+}
+
+export interface NotifPref {
+  enabled: boolean;
+  leads: NotifLeadId[];       // which reminders, e.g. 1 month AND 1 week AND 1 day before
+}
+
+export interface NotificationSettings {
+  enabled: boolean;
+  time: string;               // "HH:MM" time of day
+  items: Record<string, NotifPref>;   // key = maintenance item id
+  docs: Record<string, NotifPref>;    // key = 'insurance' | 'inspection'
+}
+
 export interface AppState {
   lang: Lang;
   onboarded: boolean;
@@ -59,4 +91,5 @@ export interface AppState {
   intervalOverrides: Record<string, { km: number; months: number }>;
   fuelLog: FuelEntry[];
   docs: DocsState;
+  notifications: NotificationSettings;
 }
