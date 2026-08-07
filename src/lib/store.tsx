@@ -23,6 +23,7 @@ const DEFAULT_STATE: AppState = {
   fuelLog: [],
   docs: { insurance: '', inspection: '' },
   notifications: DEFAULT_NOTIFS,
+  vehicleSpecs: {},
 };
 
 function loadState(): AppState {
@@ -63,6 +64,9 @@ interface StoreApi {
   setDoc: (key: keyof DocsState, value: string) => void;
   setNotifications: (patch: Partial<NotificationSettings>) => void;
   setNotifPref: (category: 'items' | 'docs', key: string, pref: NotificationSettings['items'][string]) => void;
+  setVehicleSpec: (id: string, value: string) => void;
+  resetVehicleSpec: (id: string) => void;
+  resetAllSpecs: () => void;
   resetAll: () => void;
 }
 
@@ -163,6 +167,21 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         ...s,
         notifications: { ...s.notifications, [category]: { ...s.notifications[category], [key]: pref } },
       })),
+
+    setVehicleSpec: (id, value) =>
+      setState((s) => {
+        const vehicleSpecs = { ...s.vehicleSpecs, [id]: value };
+        return { ...s, vehicleSpecs };
+      }),
+
+    resetVehicleSpec: (id) =>
+      setState((s) => {
+        const vehicleSpecs = { ...s.vehicleSpecs };
+        delete vehicleSpecs[id];
+        return { ...s, vehicleSpecs };
+      }),
+
+    resetAllSpecs: () => setState((s) => ({ ...s, vehicleSpecs: {} })),
 
     resetAll: () => setState((s) => ({ ...DEFAULT_STATE, lang: s.lang })),
   }), [state]);

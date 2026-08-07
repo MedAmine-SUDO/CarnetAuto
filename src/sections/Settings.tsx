@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Bell, Car, ChevronRight, Database, Info, Languages, Pencil } from 'lucide-react';
+import { Bell, Car, ChevronRight, ClipboardList, Database, Info, Languages, Pencil } from 'lucide-react';
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
@@ -11,6 +11,7 @@ import { useStore, useT } from '@/lib/store';
 import { getProfile } from '@/data/carProfiles';
 import { fmtKm } from '@/lib/i18n';
 import NotificationSettings from './NotificationSettings';
+import VehicleSpecs from './VehicleSpecs';
 
 export default function Settings() {
   const { state, setLang, updateOdometer, resetAll } = useStore();
@@ -22,8 +23,10 @@ export default function Settings() {
   const [kmOpen, setKmOpen] = useState(false);
   const [kmValue, setKmValue] = useState('');
   const [notifScreen, setNotifScreen] = useState(false);
+  const [specsScreen, setSpecsScreen] = useState(false);
 
   if (notifScreen) return <NotificationSettings onBack={() => setNotifScreen(false)} />;
+  if (specsScreen) return <VehicleSpecs onBack={() => setSpecsScreen(false)} />;
 
   if (!state.car) return null;
   const profile = getProfile(state.car.profileId);
@@ -79,6 +82,25 @@ export default function Settings() {
           <span className={`h-2.5 w-2.5 rounded-full ${notif.enabled ? 'bg-green-500' : 'bg-slate-300'}`} />
           <ChevronRight className="w-5 h-5 text-slate-400" />
         </div>
+      </button>
+
+      {/* vehicle specs */}
+      <button
+        onClick={() => setSpecsScreen(true)}
+        className="w-full bg-white rounded-2xl border border-slate-200/80 p-4 flex items-center justify-between gap-3 text-left"
+      >
+        <div>
+          <p className="font-semibold text-[15px] text-slate-900 flex items-center gap-2">
+            <ClipboardList className="w-4 h-4 text-blue-600" />
+            {t('spec.title')}
+          </p>
+          <p className="text-[13px] text-slate-500 mt-0.5">
+            {Object.keys(state.vehicleSpecs).length > 0
+              ? `${Object.keys(state.vehicleSpecs).length} ${t('spec.custom').toLowerCase()}`
+              : t('spec.recommended')}
+          </p>
+        </div>
+        <ChevronRight className="w-5 h-5 text-slate-400" />
       </button>
 
       {/* vehicle */}

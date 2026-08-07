@@ -18,6 +18,7 @@ export interface CarProfile {
   years: string;
   timingChain: boolean;     // true = timing chain (no periodic belt replacement)
   items: MaintenanceItemDef[];
+  specs: Record<string, string>;  // recommended vehicle specs (non fuel-dependent)
 }
 
 export interface ServiceRecord {
@@ -92,4 +93,5 @@ export interface AppState {
   fuelLog: FuelEntry[];
   docs: DocsState;
   notifications: NotificationSettings;
+  vehicleSpecs: Record<string, string>;  // user overrides for vehicle specs
 }
