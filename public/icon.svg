@@ -1,8 +1,27 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="112" fill="#2563eb"/>
-  <g fill="none" stroke="#ffffff" stroke-width="28" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M14.48 14.48a25 25 0 0 0 0 35.35L241.35 276.7a25 25 0 0 0 35.35 0l14.14-14.14a25 25 0 0 0 0-35.35L64 0 14.48 14.48z" transform="translate(120 118) scale(0.9)" fill="#ffffff" stroke="none"/>
-    <circle cx="168" cy="344" r="52"/>
-    <path d="M213 299l86-86"/>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3b82f6"/>
+      <stop offset="1" stop-color="#1e40af"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <g transform="translate(256 246)">
+    <rect x="-160" y="-22" width="320" height="44" rx="22" fill="#ffffff"/>
+    <rect x="-84" y="-94" width="164" height="72" rx="34" fill="#ffffff"/>
+    <circle cx="-106" cy="26" r="26" fill="#172554"/>
+    <circle cx="106" cy="26" r="26" fill="#172554"/>
   </g>
+  <g stroke="#ffffff" stroke-width="12" stroke-linecap="round">
+    <line x1="396" y1="366" x2="396" y2="374"/>
+    <line x1="396" y1="422" x2="396" y2="430"/>
+    <line x1="364" y1="398" x2="372" y2="398"/>
+    <line x1="420" y1="398" x2="428" y2="398"/>
+    <line x1="374" y1="376" x2="380" y2="382"/>
+    <line x1="412" y1="414" x2="418" y2="420"/>
+    <line x1="418" y1="376" x2="412" y2="382"/>
+    <line x1="380" y1="414" x2="374" y2="420"/>
+  </g>
+  <circle cx="396" cy="398" r="20" fill="#ffffff"/>
+  <circle cx="396" cy="398" r="8" fill="#1e40af"/>
 </svg>
