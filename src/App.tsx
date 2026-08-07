@@ -1,4 +1,5 @@
 import { StoreProvider, useStore } from './lib/store';
+import { NavProvider } from './lib/navigation';
 import Onboarding from './pages/Onboarding';
 import Main from './pages/Main';
 
@@ -10,7 +11,9 @@ function Root() {
 export default function App() {
   return (
     <StoreProvider>
-      <Root />
+      <NavProvider>
+        <Root />
+      </NavProvider>
     </StoreProvider>
   );
 }

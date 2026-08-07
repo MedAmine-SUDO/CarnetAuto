@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useStore, useT } from '@/lib/store';
+import { useNav } from '@/lib/navigation';
 import { getProfile } from '@/data/carProfiles';
 import { countryByCode } from '@/data/countries';
 import { fmtKm } from '@/lib/i18n';
@@ -17,6 +18,7 @@ import CountrySettings from './CountrySettings';
 
 export default function Settings() {
   const { state, setLang, updateOdometer, resetAll } = useStore();
+  const { settingsScreen, setSettingsScreen } = useNav();
   const t = useT();
   const lang = state.lang;
   const notif = state.notifications;
@@ -24,13 +26,11 @@ export default function Settings() {
   const [confirmReset, setConfirmReset] = useState(false);
   const [kmOpen, setKmOpen] = useState(false);
   const [kmValue, setKmValue] = useState('');
-  const [notifScreen, setNotifScreen] = useState(false);
-  const [specsScreen, setSpecsScreen] = useState(false);
-  const [countryScreen, setCountryScreen] = useState(false);
 
-  if (notifScreen) return <NotificationSettings onBack={() => setNotifScreen(false)} />;
-  if (specsScreen) return <VehicleSpecs onBack={() => setSpecsScreen(false)} />;
-  if (countryScreen) return <CountrySettings onBack={() => setCountryScreen(false)} />;
+  if (settingsScreen === 'notifications')
+    return <NotificationSettings onBack={() => setSettingsScreen('main')} />;
+  if (settingsScreen === 'specs') return <VehicleSpecs onBack={() => setSettingsScreen('main')} />;
+  if (settingsScreen === 'country') return <CountrySettings onBack={() => setSettingsScreen('main')} />;
 
   if (!state.car) return null;
   const profile = getProfile(state.car.profileId);
@@ -66,7 +66,7 @@ export default function Settings() {
 
       {/* country */}
       <button
-        onClick={() => setCountryScreen(true)}
+        onClick={() => setSettingsScreen("country")}
         className="w-full bg-white rounded-2xl border border-slate-200/80 p-4 flex items-center justify-between gap-3 text-left"
       >
         <div>
@@ -84,7 +84,7 @@ export default function Settings() {
 
       {/* notifications */}
       <button
-        onClick={() => setNotifScreen(true)}
+        onClick={() => setSettingsScreen("notifications")}
         className="w-full bg-white rounded-2xl border border-slate-200/80 p-4 flex items-center justify-between gap-3 text-left"
       >
         <div>
@@ -108,7 +108,7 @@ export default function Settings() {
 
       {/* vehicle specs */}
       <button
-        onClick={() => setSpecsScreen(true)}
+        onClick={() => setSettingsScreen("specs")}
         className="w-full bg-white rounded-2xl border border-slate-200/80 p-4 flex items-center justify-between gap-3 text-left"
       >
         <div>

@@ -1,16 +1,14 @@
-import { useState } from 'react';
-import { Fuel, LayoutDashboard, Settings as SettingsIcon, Wrench } from 'lucide-react';
+import { LayoutDashboard, Fuel, Settings as SettingsIcon, Wrench } from 'lucide-react';
 import { useT } from '@/lib/store';
+import { useNav, type Tab } from '@/lib/navigation';
 import Dashboard from '@/sections/Dashboard';
 import Maintenance from '@/sections/Maintenance';
 import FuelSection from '@/sections/Fuel';
 import Settings from '@/sections/Settings';
 
-type Tab = 'home' | 'maintenance' | 'fuel' | 'settings';
-
 export default function Main() {
   const t = useT();
-  const [tab, setTab] = useState<Tab>('home');
+  const { tab, setTab } = useNav();
 
   const tabs: { id: Tab; icon: typeof LayoutDashboard; label: string }[] = [
     { id: 'home', icon: LayoutDashboard, label: t('nav.home') },
