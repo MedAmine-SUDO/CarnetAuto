@@ -27,7 +27,7 @@ export default function VehicleSpecs({ onBack }: { onBack: () => void }) {
 
   const optionsFor = (
     id: string,
-  ): { value: string; labelKey?: string; name?: string; hintKey?: string }[] =>
+  ): { value: string; labelKey?: string; name?: string; hintKey?: string; handle?: string }[] =>
     id === 'fuelType' ? fuelOptions : (specDef(id)?.options ?? []);
 
   const displayValue = (id: string, value: string) => {
@@ -97,6 +97,7 @@ export default function VehicleSpecs({ onBack }: { onBack: () => void }) {
             <div className="divide-y divide-slate-100">
               {defs.map((def) => {
                 const cur = currentSpec(def.id, profile.id, fuel, country, overrides);
+                const fuelOpt = def.id === 'fuelType' ? fuelOptions.find((o) => o.value === cur.value) : undefined;
                 return (
                   <button
                     key={def.id}
@@ -106,6 +107,12 @@ export default function VehicleSpecs({ onBack }: { onBack: () => void }) {
                     <div className="min-w-0">
                       <p className="text-[13px] text-slate-500">{t(`spec.${def.id}`)}</p>
                       <p className="text-[15px] font-semibold text-slate-900 truncate">
+                        {fuelOpt && (
+                          <span
+                            className="inline-block w-3 h-3 rounded-full align-middle mr-2 ring-1 ring-black/10"
+                            style={{ backgroundColor: fuelOpt.handle }}
+                          />
+                        )}
                         {displayValue(def.id, cur.value)}
                         {cur.custom && (
                           <span className="ml-2 text-[10px] font-medium text-blue-600 bg-blue-50 rounded-full px-2 py-0.5 align-middle">
@@ -145,7 +152,11 @@ export default function VehicleSpecs({ onBack }: { onBack: () => void }) {
                       }`}
                     >
                       <span className="flex items-center justify-between gap-2">
-                        <span className={`text-[15px] font-semibold ${selected ? 'text-white' : 'text-slate-900'}`}>
+                        <span className={`flex items-center gap-2 text-[15px] font-semibold ${selected ? 'text-white' : 'text-slate-900'}`}>
+                          <span
+                            className="inline-block w-3 h-3 rounded-full ring-1 ring-black/10"
+                            style={{ backgroundColor: opt.handle }}
+                          />
                           {opt.name}
                         </span>
                         {opt.value === rec && (

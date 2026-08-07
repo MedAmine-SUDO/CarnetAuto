@@ -7,6 +7,8 @@ export interface FuelOption {
   name: string;
   /** Localized explanation of what this fuel is (i18n key). */
   hintKey: string;
+  /** Pump handle color (hex) so users can match the pump at the station. */
+  handle: string;
 }
 
 export interface Country {
@@ -16,11 +18,20 @@ export interface Country {
   fuels: FuelOption[];
 }
 
-const f = (value: string, family: FuelFamily, name: string, hintKey: string): FuelOption => ({
+// handle colors
+const GREEN = '#22c55e'; // petrol (standard)
+const BLUE = '#3b82f6'; // premium petrol (98 / super)
+const YELLOW = '#eab308'; // diesel / mazout
+const AMBER = '#d97706'; // premium diesel
+const GREY = '#94a3b8'; // LPG / GPL
+const BLACK = '#334155'; // US diesel
+
+const f = (value: string, family: FuelFamily, name: string, hintKey: string, handle: string): FuelOption => ({
   value,
   family,
   name,
   hintKey,
+  handle,
 });
 
 export const COUNTRIES: Country[] = [
@@ -29,9 +40,9 @@ export const COUNTRIES: Country[] = [
     flag: '🇹🇳',
     nameKey: 'country.TN',
     fuels: [
-      f('sp95', 'petrol', 'Sans plomb 95', 'fuelHint.standardPetrol'),
-      f('sp98', 'petrol', 'Sans plomb 98', 'fuelHint.premiumPetrol'),
-      f('mazout', 'diesel', 'Mazout', 'fuelHint.diesel'),
+      f('sp95', 'petrol', 'Sans plomb 95', 'fuelHint.standardPetrol', GREEN),
+      f('sp98', 'petrol', 'Sans plomb 98', 'fuelHint.premiumPetrol', GREEN),
+      f('mazout', 'diesel', 'Mazout', 'fuelHint.diesel', YELLOW),
     ],
   },
   {
@@ -39,9 +50,9 @@ export const COUNTRIES: Country[] = [
     flag: '🇩🇿',
     nameKey: 'country.DZ',
     fuels: [
-      f('sp95', 'petrol', 'Sans plomb 95', 'fuelHint.standardPetrol'),
-      f('sp98', 'petrol', 'Sans plomb 98', 'fuelHint.premiumPetrol'),
-      f('gasoil', 'diesel', 'Gasoil', 'fuelHint.diesel'),
+      f('sp95', 'petrol', 'Sans plomb 95', 'fuelHint.standardPetrol', GREEN),
+      f('sp98', 'petrol', 'Sans plomb 98', 'fuelHint.premiumPetrol', GREEN),
+      f('gasoil', 'diesel', 'Gasoil', 'fuelHint.diesel', YELLOW),
     ],
   },
   {
@@ -49,9 +60,9 @@ export const COUNTRIES: Country[] = [
     flag: '🇲🇦',
     nameKey: 'country.MA',
     fuels: [
-      f('sp95', 'petrol', 'Sans plomb 95', 'fuelHint.standardPetrol'),
-      f('sp98', 'petrol', 'Sans plomb 98', 'fuelHint.premiumPetrol'),
-      f('gazole', 'diesel', 'Gazole', 'fuelHint.diesel'),
+      f('sp95', 'petrol', 'Sans plomb 95', 'fuelHint.standardPetrol', GREEN),
+      f('sp98', 'petrol', 'Sans plomb 98', 'fuelHint.premiumPetrol', GREEN),
+      f('gazole', 'diesel', 'Gazole', 'fuelHint.diesel', YELLOW),
     ],
   },
   {
@@ -59,9 +70,9 @@ export const COUNTRIES: Country[] = [
     flag: '🇱🇾',
     nameKey: 'country.LY',
     fuels: [
-      f('sp95', 'petrol', 'Essence 95', 'fuelHint.standardPetrol'),
-      f('sp98', 'petrol', 'Essence 98', 'fuelHint.premiumPetrol'),
-      f('diesel', 'diesel', 'Diesel', 'fuelHint.diesel'),
+      f('sp95', 'petrol', 'Essence 95', 'fuelHint.standardPetrol', GREEN),
+      f('sp98', 'petrol', 'Essence 98', 'fuelHint.premiumPetrol', BLUE),
+      f('diesel', 'diesel', 'Diesel', 'fuelHint.diesel', YELLOW),
     ],
   },
   {
@@ -69,10 +80,10 @@ export const COUNTRIES: Country[] = [
     flag: '🇪🇬',
     nameKey: 'country.EG',
     fuels: [
-      f('octane80', 'petrol', 'Benzine 80', 'fuelHint.lowOctane'),
-      f('octane92', 'petrol', 'Benzine 92', 'fuelHint.lowOctane'),
-      f('octane95', 'petrol', 'Benzine 95', 'fuelHint.standardPetrol'),
-      f('diesel', 'diesel', 'Diesel', 'fuelHint.diesel'),
+      f('octane80', 'petrol', 'Benzine 80', 'fuelHint.lowOctane', GREEN),
+      f('octane92', 'petrol', 'Benzine 92', 'fuelHint.lowOctane', GREEN),
+      f('octane95', 'petrol', 'Benzine 95', 'fuelHint.standardPetrol', GREEN),
+      f('diesel', 'diesel', 'Diesel', 'fuelHint.diesel', YELLOW),
     ],
   },
   {
@@ -80,12 +91,12 @@ export const COUNTRIES: Country[] = [
     flag: '🇫🇷',
     nameKey: 'country.FR',
     fuels: [
-      f('sp95e5', 'petrol', 'Sans plomb 95-E5', 'fuelHint.standardPetrol'),
-      f('sp95e10', 'petrol', 'Sans plomb 95-E10', 'fuelHint.standardPetrol'),
-      f('sp98', 'petrol', 'Sans plomb 98', 'fuelHint.premiumPetrol'),
-      f('gazoleb7', 'diesel', 'Gazole B7', 'fuelHint.biodiesel'),
-      f('gazoleb10', 'diesel', 'Gazole B10', 'fuelHint.biodiesel'),
-      f('gpl', 'petrol', 'GPLc', 'fuelHint.lpg'),
+      f('sp95e5', 'petrol', 'Sans plomb 95-E5', 'fuelHint.standardPetrol', GREEN),
+      f('sp95e10', 'petrol', 'Sans plomb 95-E10', 'fuelHint.standardPetrol', GREEN),
+      f('sp98', 'petrol', 'Sans plomb 98', 'fuelHint.premiumPetrol', BLUE),
+      f('gazoleb7', 'diesel', 'Gazole B7', 'fuelHint.biodiesel', YELLOW),
+      f('gazoleb10', 'diesel', 'Gazole B10', 'fuelHint.biodiesel', YELLOW),
+      f('gpl', 'petrol', 'GPLc', 'fuelHint.lpg', GREY),
     ],
   },
   {
@@ -93,11 +104,11 @@ export const COUNTRIES: Country[] = [
     flag: '🇧🇪',
     nameKey: 'country.BE',
     fuels: [
-      f('sp95e5', 'petrol', 'Sans plomb 95-E5', 'fuelHint.standardPetrol'),
-      f('sp95e10', 'petrol', 'Sans plomb 95-E10', 'fuelHint.standardPetrol'),
-      f('sp98', 'petrol', 'Sans plomb 98', 'fuelHint.premiumPetrol'),
-      f('gazoleb7', 'diesel', 'Gazole B7', 'fuelHint.biodiesel'),
-      f('gazoleb10', 'diesel', 'Gazole B10', 'fuelHint.biodiesel'),
+      f('sp95e5', 'petrol', 'Sans plomb 95-E5', 'fuelHint.standardPetrol', GREEN),
+      f('sp95e10', 'petrol', 'Sans plomb 95-E10', 'fuelHint.standardPetrol', GREEN),
+      f('sp98', 'petrol', 'Sans plomb 98', 'fuelHint.premiumPetrol', BLUE),
+      f('gazoleb7', 'diesel', 'Gazole B7', 'fuelHint.biodiesel', YELLOW),
+      f('gazoleb10', 'diesel', 'Gazole B10', 'fuelHint.biodiesel', YELLOW),
     ],
   },
   {
@@ -105,11 +116,11 @@ export const COUNTRIES: Country[] = [
     flag: '🇪🇸',
     nameKey: 'country.ES',
     fuels: [
-      f('gasolina95', 'petrol', 'Gasolina 95', 'fuelHint.standardPetrol'),
-      f('gasolina98', 'petrol', 'Gasolina 98', 'fuelHint.premiumPetrol'),
-      f('diesel', 'diesel', 'Diésel', 'fuelHint.diesel'),
-      f('dieselplus', 'diesel', 'Diésel Plus', 'fuelHint.premiumDiesel'),
-      f('gpl', 'petrol', 'GLP', 'fuelHint.lpg'),
+      f('gasolina95', 'petrol', 'Gasolina 95', 'fuelHint.standardPetrol', GREEN),
+      f('gasolina98', 'petrol', 'Gasolina 98', 'fuelHint.premiumPetrol', BLUE),
+      f('diesel', 'diesel', 'Diésel', 'fuelHint.diesel', YELLOW),
+      f('dieselplus', 'diesel', 'Diésel Plus', 'fuelHint.premiumDiesel', AMBER),
+      f('gpl', 'petrol', 'GLP', 'fuelHint.lpg', GREY),
     ],
   },
   {
@@ -117,10 +128,10 @@ export const COUNTRIES: Country[] = [
     flag: '🇮🇹',
     nameKey: 'country.IT',
     fuels: [
-      f('benzina95', 'petrol', 'Benzina 95', 'fuelHint.standardPetrol'),
-      f('benzina98', 'petrol', 'Benzina 98', 'fuelHint.premiumPetrol'),
-      f('diesel', 'diesel', 'Diesel', 'fuelHint.diesel'),
-      f('gpl', 'petrol', 'GPL', 'fuelHint.lpg'),
+      f('benzina95', 'petrol', 'Benzina 95', 'fuelHint.standardPetrol', GREEN),
+      f('benzina98', 'petrol', 'Benzina 98', 'fuelHint.premiumPetrol', BLUE),
+      f('diesel', 'diesel', 'Diesel', 'fuelHint.diesel', YELLOW),
+      f('gpl', 'petrol', 'GPL', 'fuelHint.lpg', GREY),
     ],
   },
   {
@@ -128,11 +139,11 @@ export const COUNTRIES: Country[] = [
     flag: '🇩🇪',
     nameKey: 'country.DE',
     fuels: [
-      f('superE5', 'petrol', 'Super E5', 'fuelHint.standardPetrol'),
-      f('superE10', 'petrol', 'Super E10', 'fuelHint.standardPetrol'),
-      f('superPlus', 'petrol', 'Super Plus (98)', 'fuelHint.premiumPetrol'),
-      f('dieselB7', 'diesel', 'Diesel B7', 'fuelHint.biodiesel'),
-      f('dieselB10', 'diesel', 'Diesel B10', 'fuelHint.biodiesel'),
+      f('superE5', 'petrol', 'Super E5', 'fuelHint.standardPetrol', GREEN),
+      f('superE10', 'petrol', 'Super E10', 'fuelHint.standardPetrol', GREEN),
+      f('superPlus', 'petrol', 'Super Plus (98)', 'fuelHint.premiumPetrol', BLUE),
+      f('dieselB7', 'diesel', 'Diesel B7', 'fuelHint.biodiesel', YELLOW),
+      f('dieselB10', 'diesel', 'Diesel B10', 'fuelHint.biodiesel', YELLOW),
     ],
   },
   {
@@ -140,11 +151,11 @@ export const COUNTRIES: Country[] = [
     flag: '🇳🇱',
     nameKey: 'country.NL',
     fuels: [
-      f('euro95e5', 'petrol', 'Euro 95 (E5)', 'fuelHint.standardPetrol'),
-      f('euro95e10', 'petrol', 'Euro 95 (E10)', 'fuelHint.standardPetrol'),
-      f('euro98', 'petrol', 'Euro 98', 'fuelHint.premiumPetrol'),
-      f('diesel', 'diesel', 'Diesel', 'fuelHint.diesel'),
-      f('premiumDiesel', 'diesel', 'Premium Diesel', 'fuelHint.premiumDiesel'),
+      f('euro95e5', 'petrol', 'Euro 95 (E5)', 'fuelHint.standardPetrol', GREEN),
+      f('euro95e10', 'petrol', 'Euro 95 (E10)', 'fuelHint.standardPetrol', GREEN),
+      f('euro98', 'petrol', 'Euro 98', 'fuelHint.premiumPetrol', BLUE),
+      f('diesel', 'diesel', 'Diesel', 'fuelHint.diesel', YELLOW),
+      f('premiumDiesel', 'diesel', 'Premium Diesel', 'fuelHint.premiumDiesel', AMBER),
     ],
   },
   {
@@ -152,11 +163,11 @@ export const COUNTRIES: Country[] = [
     flag: '🇬🇧',
     nameKey: 'country.GB',
     fuels: [
-      f('unleadedE5', 'petrol', 'Unleaded (E5)', 'fuelHint.standardPetrol'),
-      f('unleadedE10', 'petrol', 'Unleaded (E10)', 'fuelHint.standardPetrol'),
-      f('superUnleaded', 'petrol', 'Super Unleaded', 'fuelHint.premiumPetrol'),
-      f('dieselB7', 'diesel', 'Diesel (B7)', 'fuelHint.biodiesel'),
-      f('premiumDiesel', 'diesel', 'Premium Diesel', 'fuelHint.premiumDiesel'),
+      f('unleadedE5', 'petrol', 'Unleaded (E5)', 'fuelHint.standardPetrol', GREEN),
+      f('unleadedE10', 'petrol', 'Unleaded (E10)', 'fuelHint.standardPetrol', GREEN),
+      f('superUnleaded', 'petrol', 'Super Unleaded', 'fuelHint.premiumPetrol', BLUE),
+      f('dieselB7', 'diesel', 'Diesel (B7)', 'fuelHint.biodiesel', YELLOW),
+      f('premiumDiesel', 'diesel', 'Premium Diesel', 'fuelHint.premiumDiesel', AMBER),
     ],
   },
   {
@@ -164,10 +175,10 @@ export const COUNTRIES: Country[] = [
     flag: '🇵🇹',
     nameKey: 'country.PT',
     fuels: [
-      f('gasolina95', 'petrol', 'Gasolina 95', 'fuelHint.standardPetrol'),
-      f('gasolina98', 'petrol', 'Gasolina 98', 'fuelHint.premiumPetrol'),
-      f('diesel', 'diesel', 'Gasóleo', 'fuelHint.diesel'),
-      f('dieselplus', 'diesel', 'Gasóleo Plus', 'fuelHint.premiumDiesel'),
+      f('gasolina95', 'petrol', 'Gasolina 95', 'fuelHint.standardPetrol', GREEN),
+      f('gasolina98', 'petrol', 'Gasolina 98', 'fuelHint.premiumPetrol', BLUE),
+      f('diesel', 'diesel', 'Gasóleo', 'fuelHint.diesel', YELLOW),
+      f('dieselplus', 'diesel', 'Gasóleo Plus', 'fuelHint.premiumDiesel', AMBER),
     ],
   },
   {
@@ -175,10 +186,10 @@ export const COUNTRIES: Country[] = [
     flag: '🇺🇸',
     nameKey: 'country.US',
     fuels: [
-      f('regular', 'petrol', 'Regular (87)', 'fuelHint.regular'),
-      f('midgrade', 'petrol', 'Mid-Grade (89)', 'fuelHint.midgrade'),
-      f('premium', 'petrol', 'Premium (91-93)', 'fuelHint.highOctane'),
-      f('diesel', 'diesel', 'Diesel', 'fuelHint.diesel'),
+      f('regular', 'petrol', 'Regular (87)', 'fuelHint.regular', GREEN),
+      f('midgrade', 'petrol', 'Mid-Grade (89)', 'fuelHint.midgrade', '#f97316'),
+      f('premium', 'petrol', 'Premium (91-93)', 'fuelHint.highOctane', BLUE),
+      f('diesel', 'diesel', 'Diesel', 'fuelHint.diesel', BLACK),
     ],
   },
   {
@@ -186,10 +197,10 @@ export const COUNTRIES: Country[] = [
     flag: '🇨🇦',
     nameKey: 'country.CA',
     fuels: [
-      f('regular', 'petrol', 'Regular (87)', 'fuelHint.regular'),
-      f('midgrade', 'petrol', 'Mid-Grade (89)', 'fuelHint.midgrade'),
-      f('premium', 'petrol', 'Premium (91-93)', 'fuelHint.highOctane'),
-      f('diesel', 'diesel', 'Diesel', 'fuelHint.diesel'),
+      f('regular', 'petrol', 'Regular (87)', 'fuelHint.regular', GREEN),
+      f('midgrade', 'petrol', 'Mid-Grade (89)', 'fuelHint.midgrade', '#f97316'),
+      f('premium', 'petrol', 'Premium (91-93)', 'fuelHint.highOctane', BLUE),
+      f('diesel', 'diesel', 'Diesel', 'fuelHint.diesel', BLACK),
     ],
   },
   {
@@ -197,9 +208,9 @@ export const COUNTRIES: Country[] = [
     flag: '🇸🇦',
     nameKey: 'country.SA',
     fuels: [
-      f('gulf91', 'petrol', 'Petrol 91', 'fuelHint.lowOctane'),
-      f('gulf95', 'petrol', 'Petrol 95', 'fuelHint.standardPetrol'),
-      f('diesel', 'diesel', 'Diesel', 'fuelHint.diesel'),
+      f('gulf91', 'petrol', 'Petrol 91', 'fuelHint.lowOctane', GREEN),
+      f('gulf95', 'petrol', 'Petrol 95', 'fuelHint.standardPetrol', GREEN),
+      f('diesel', 'diesel', 'Diesel', 'fuelHint.diesel', YELLOW),
     ],
   },
   {
@@ -207,9 +218,9 @@ export const COUNTRIES: Country[] = [
     flag: '🇦🇪',
     nameKey: 'country.AE',
     fuels: [
-      f('special95', 'petrol', 'Special 95', 'fuelHint.standardPetrol'),
-      f('super98', 'petrol', 'Super 98', 'fuelHint.premiumPetrol'),
-      f('diesel', 'diesel', 'Diesel', 'fuelHint.diesel'),
+      f('special95', 'petrol', 'Special 95', 'fuelHint.standardPetrol', GREEN),
+      f('super98', 'petrol', 'Super 98', 'fuelHint.premiumPetrol', BLUE),
+      f('diesel', 'diesel', 'Diesel', 'fuelHint.diesel', YELLOW),
     ],
   },
   {
@@ -217,9 +228,9 @@ export const COUNTRIES: Country[] = [
     flag: '🇰🇼',
     nameKey: 'country.KW',
     fuels: [
-      f('premium91', 'petrol', 'Premium 91', 'fuelHint.lowOctane'),
-      f('super98', 'petrol', 'Super 98', 'fuelHint.premiumPetrol'),
-      f('diesel', 'diesel', 'Diesel', 'fuelHint.diesel'),
+      f('premium91', 'petrol', 'Premium 91', 'fuelHint.lowOctane', GREEN),
+      f('super98', 'petrol', 'Super 98', 'fuelHint.premiumPetrol', BLUE),
+      f('diesel', 'diesel', 'Diesel', 'fuelHint.diesel', YELLOW),
     ],
   },
   {
@@ -227,9 +238,9 @@ export const COUNTRIES: Country[] = [
     flag: '🇹🇷',
     nameKey: 'country.TR',
     fuels: [
-      f('benzin95', 'petrol', 'Benzin 95', 'fuelHint.standardPetrol'),
-      f('benzin98', 'petrol', 'Benzin 98', 'fuelHint.premiumPetrol'),
-      f('mazot', 'diesel', 'Mazot', 'fuelHint.diesel'),
+      f('benzin95', 'petrol', 'Benzin 95', 'fuelHint.standardPetrol', GREEN),
+      f('benzin98', 'petrol', 'Benzin 98', 'fuelHint.premiumPetrol', BLUE),
+      f('mazot', 'diesel', 'Mazot', 'fuelHint.diesel', YELLOW),
     ],
   },
 ];
