@@ -50,7 +50,7 @@ export default function Onboarding() {
   return (
     <div className="min-h-dvh bg-slate-50 flex flex-col">
       {/* top bar */}
-      <div className="max-w-md w-full mx-auto px-5 pt-6 flex items-center justify-between">
+      <div className="max-w-md w-full mx-auto px-5 pt-[max(1.5rem,env(safe-area-inset-top))] flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center">
             <Wrench className="w-4.5 h-4.5" />

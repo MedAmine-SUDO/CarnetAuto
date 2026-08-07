@@ -21,7 +21,7 @@ export default function Main() {
 
   return (
     <div className="min-h-dvh bg-slate-50">
-      <div className="max-w-md mx-auto px-4 pt-5 pb-28">
+      <div className="max-w-md mx-auto px-4 pt-[max(1.25rem,env(safe-area-inset-top))] pb-28">
         {tab === 'home' && <Dashboard onGoToMaintenance={() => setTab('maintenance')} />}
         {tab === 'maintenance' && <Maintenance />}
         {tab === 'fuel' && <FuelSection />}
