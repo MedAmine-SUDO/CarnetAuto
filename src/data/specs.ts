@@ -1,5 +1,6 @@
 import type { FuelType } from '@/types';
 import { getProfile } from './carProfiles';
+import { defaultFuelForCountry } from './countries';
 
 export type SpecCategory = 'fuel' | 'engine' | 'fluids' | 'tires' | 'general';
 
@@ -17,11 +18,7 @@ export const SPEC_DEFS: SpecDef[] = [
     id: 'fuelType',
     category: 'fuel',
     type: 'choice',
-    options: [
-      { value: 'sp95', labelKey: 'spec.fuel.sp95' },
-      { value: 'sp98', labelKey: 'spec.fuel.sp98' },
-      { value: 'mazout', labelKey: 'spec.fuel.mazout' },
-    ],
+    options: [],
   },
   { id: 'engineCode', category: 'engine', type: 'text' },
   { id: 'displacement', category: 'engine', type: 'text' },
@@ -69,9 +66,9 @@ export function specDef(id: string): SpecDef | undefined {
   return SPEC_DEFS.find((d) => d.id === id);
 }
 
-/** Recommended value for a spec given the car profile and engine type. */
-export function recommendedSpec(id: string, profileId: string, fuel: FuelType): string {
-  if (id === 'fuelType') return fuel === 'petrol' ? 'sp95' : 'mazout';
+/** Recommended value for a spec given the car profile, engine type and country. */
+export function recommendedSpec(id: string, profileId: string, fuel: FuelType, country: string): string {
+  if (id === 'fuelType') return defaultFuelForCountry(country, fuel);
   if (id === 'sparkPlugs') return '4';
   return getProfile(profileId).specs[id] ?? '';
 }
@@ -81,8 +78,9 @@ export function currentSpec(
   id: string,
   profileId: string,
   fuel: FuelType,
+  country: string,
   overrides: Record<string, string>,
 ): { value: string; custom: boolean } {
   if (overrides[id] !== undefined) return { value: overrides[id], custom: true };
-  return { value: recommendedSpec(id, profileId, fuel), custom: false };
+  return { value: recommendedSpec(id, profileId, fuel, country), custom: false };
 }

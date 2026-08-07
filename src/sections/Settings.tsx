@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Bell, Car, ChevronRight, ClipboardList, Database, Info, Languages, Pencil } from 'lucide-react';
+import { Bell, Car, ChevronRight, ClipboardList, Database, Globe, Info, Languages, Pencil } from 'lucide-react';
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
@@ -9,9 +9,11 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useStore, useT } from '@/lib/store';
 import { getProfile } from '@/data/carProfiles';
+import { countryByCode } from '@/data/countries';
 import { fmtKm } from '@/lib/i18n';
 import NotificationSettings from './NotificationSettings';
 import VehicleSpecs from './VehicleSpecs';
+import CountrySettings from './CountrySettings';
 
 export default function Settings() {
   const { state, setLang, updateOdometer, resetAll } = useStore();
@@ -24,9 +26,11 @@ export default function Settings() {
   const [kmValue, setKmValue] = useState('');
   const [notifScreen, setNotifScreen] = useState(false);
   const [specsScreen, setSpecsScreen] = useState(false);
+  const [countryScreen, setCountryScreen] = useState(false);
 
   if (notifScreen) return <NotificationSettings onBack={() => setNotifScreen(false)} />;
   if (specsScreen) return <VehicleSpecs onBack={() => setSpecsScreen(false)} />;
+  if (countryScreen) return <CountrySettings onBack={() => setCountryScreen(false)} />;
 
   if (!state.car) return null;
   const profile = getProfile(state.car.profileId);
@@ -59,6 +63,24 @@ export default function Settings() {
           ))}
         </div>
       </div>
+
+      {/* country */}
+      <button
+        onClick={() => setCountryScreen(true)}
+        className="w-full bg-white rounded-2xl border border-slate-200/80 p-4 flex items-center justify-between gap-3 text-left"
+      >
+        <div>
+          <p className="font-semibold text-[15px] text-slate-900 flex items-center gap-2">
+            <Globe className="w-4 h-4 text-blue-600" />
+            {t('set.country')}
+          </p>
+          <p className="text-[13px] text-slate-500 mt-0.5">{t('set.country.sub')}</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-xl">{countryByCode(state.country).flag}</span>
+          <ChevronRight className="w-5 h-5 text-slate-400" />
+        </div>
+      </button>
 
       {/* notifications */}
       <button

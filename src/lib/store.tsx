@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useMemo, useState, type ReactNode
 import type { AppState, CarState, DocsState, FuelEntry, Lang, NotificationSettings, ServiceRecord } from '@/types';
 import { makeT, todayISO } from './i18n';
 import { syncNotifications } from './notifications';
+import { defaultFuelForCountry, fuelFamily, isFuelInCountry, DEFAULT_COUNTRY } from '@/data/countries';
 
 const STORAGE_KEY = 'carnet-auto-v1';
 
@@ -14,6 +15,7 @@ const DEFAULT_NOTIFS: NotificationSettings = {
 
 const DEFAULT_STATE: AppState = {
   lang: 'fr',
+  country: DEFAULT_COUNTRY,
   onboarded: false,
   car: null,
   odometer: 0,
@@ -53,6 +55,7 @@ export interface OnboardingPayload {
 interface StoreApi {
   state: AppState;
   setLang: (lang: Lang) => void;
+  setCountry: (code: string) => void;
   completeOnboarding: (p: OnboardingPayload) => void;
   updateOdometer: (km: number) => void;
   markDone: (itemId: string) => void;
@@ -87,6 +90,15 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const api = useMemo<StoreApi>(() => ({
     state,
     setLang: (lang) => setState((s) => ({ ...s, lang })),
+
+    setCountry: (code) =>
+      setState((s) => {
+        const vehicleSpecs = { ...s.vehicleSpecs };
+        if (vehicleSpecs.fuelType !== undefined && !isFuelInCountry(code, vehicleSpecs.fuelType)) {
+          vehicleSpecs.fuelType = defaultFuelForCountry(code, fuelFamily(vehicleSpecs.fuelType));
+        }
+        return { ...s, country: code, vehicleSpecs };
+      }),
 
     completeOnboarding: (p) =>
       setState((s) => {
@@ -183,7 +195,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
     resetAllSpecs: () => setState((s) => ({ ...s, vehicleSpecs: {} })),
 
-    resetAll: () => setState((s) => ({ ...DEFAULT_STATE, lang: s.lang })),
+    resetAll: () => setState((s) => ({ ...DEFAULT_STATE, lang: s.lang, country: s.country })),
   }), [state]);
 
   return <StoreContext.Provider value={api}>{children}</StoreContext.Provider>;

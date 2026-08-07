@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useStore, useT } from '@/lib/store';
 import { getProfile } from '@/data/carProfiles';
+import { fuelOptionsForCountry } from '@/data/countries';
 import { SPEC_DEFS, specDef, currentSpec, type SpecCategory } from '@/data/specs';
 import { fmtKm } from '@/lib/i18n';
 
@@ -18,21 +19,25 @@ export default function VehicleSpecs({ onBack }: { onBack: () => void }) {
   if (!state.car) return null;
   const profile = getProfile(state.car.profileId);
   const fuel = state.car.fuel;
+  const country = state.country;
   const overrides = state.vehicleSpecs;
+  const fuelOptions = fuelOptionsForCountry(country);
 
   const categories: SpecCategory[] = ['fuel', 'engine', 'fluids', 'tires', 'general'];
+
+  const optionsFor = (id: string) => (id === 'fuelType' ? fuelOptions : specDef(id)?.options);
 
   const displayValue = (id: string, value: string) => {
     const def = specDef(id);
     if (def?.type === 'choice') {
-      const opt = def.options?.find((o) => o.value === value);
+      const opt = optionsFor(id)?.find((o) => o.value === value);
       return opt ? t(opt.labelKey) : value || t('spec.notSet');
     }
     return value || t('spec.notSet');
   };
 
   const openEdit = (id: string) => {
-    const cur = currentSpec(id, profile.id, fuel, overrides);
+    const cur = currentSpec(id, profile.id, fuel, country, overrides);
     setEditing(id);
     setEditValue(cur.value);
   };
@@ -88,7 +93,7 @@ export default function VehicleSpecs({ onBack }: { onBack: () => void }) {
             <p className="px-4 pt-3.5 pb-1 font-semibold text-[15px] text-slate-900">{t(`spec.category.${cat}`)}</p>
             <div className="divide-y divide-slate-100">
               {defs.map((def) => {
-                const cur = currentSpec(def.id, profile.id, fuel, overrides);
+                const cur = currentSpec(def.id, profile.id, fuel, country, overrides);
                 return (
                   <button
                     key={def.id}
@@ -125,7 +130,7 @@ export default function VehicleSpecs({ onBack }: { onBack: () => void }) {
 
             {editingDef.type === 'choice' ? (
               <div className="grid grid-cols-3 gap-2">
-                {editingDef.options?.map((opt) => (
+                {optionsFor(editingDef.id)?.map((opt) => (
                   <button
                     key={opt.value}
                     onClick={() => setEditValue(opt.value)}

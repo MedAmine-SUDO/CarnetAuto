@@ -84,6 +84,7 @@ export interface NotificationSettings {
 
 export interface AppState {
   lang: Lang;
+  country: string;            // ISO country code — drives fuel naming
   onboarded: boolean;
   car: CarState | null;
   odometer: number;
